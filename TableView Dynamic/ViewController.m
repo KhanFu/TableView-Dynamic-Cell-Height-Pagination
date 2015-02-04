@@ -1,0 +1,129 @@
+//
+//  ViewController.m
+//  TableView Dynamic
+//
+//  Created by Justin Khan on 2015-01-30.
+//  Copyright (c) 2015 Justin Khan. All rights reserved.
+//
+
+#import "ViewController.h"
+#import "TableViewCell.h"
+
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource>
+
+@property(weak, nonatomic) IBOutlet UITableView *tableView;
+@property(strong, nonatomic) NSMutableArray *data;
+@property(nonatomic) BOOL viewFirstReloaded;
+
+@property(nonatomic) NSInteger totalNumberOfPages;
+@property(nonatomic) NSInteger pageNumber;
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+
+    self.data = [NSMutableArray
+        arrayWithObjects:
+
+            @"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+            @"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+
+            @"2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222"
+            @"22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222",
+            @"3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+            @"333333333333333333333333333333333333333333333333333333333333333333333333333",
+            @"4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444"
+            @"444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444"
+            @"44444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444",
+            @"5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555"
+            @"555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555",
+
+            @"6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666"
+            @"6666666666666666666666666666666666666666666666666666666666666666666666666666666",
+            @"7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777"
+            @"77777777777777777777777777777777777777777777777777",
+            @"8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888"
+            @"88888888888888888888888888888888888888888888",
+            @"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            @"999999999999999999999999999999999999999999999999999999999999999999999999999",
+            @"1010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101"
+            @"01010101010101010101010101010101010101010101010",
+            nil];
+
+    self.totalNumberOfPages = 5;
+    self.pageNumber = 1;
+
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+
+    self.tableView.estimatedRowHeight = 100.0;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+
+    [self.tableView reloadData];
+}
+
+#pragma mark - UITableView Data Source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.data count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+#pragma mark - UITableView Delegate
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TABLE_VIEW_CELL_IDENTIFIER" forIndexPath:indexPath];
+
+    if (cell == nil) {
+        cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TABLE_VIEW_CELL_IDENTIFIER"];
+    }
+
+    cell.label.text = [self.data objectAtIndex:indexPath.row];
+
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    return 100.0;
+}
+
+#pragma mark - Utilities
+
+- (NSArray *)dataToAddOnFirstPage {
+    return @[
+        @"11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 "
+        @"11 11 11 11 11 11 11 11 11 11 11 ",
+        @"12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 "
+        @"12 12 12 12 12 12 12 12 12 12 12 ",
+        @"13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 "
+        @"13 13 13 13 13 13 13 13 13 13 13 "
+    ];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // Check if the table view has been scrolled to the bottom and if it hasn't reached the last page, then add new data and reload the table
+    if ((scrollView.contentOffset.y + self.tableView.frame.size.height) == self.tableView.contentSize.height && self.pageNumber != self.totalNumberOfPages &&
+        self.viewFirstReloaded) {
+
+        self.viewFirstReloaded = NO;
+
+        // Add new data and reload table
+        [self.data addObjectsFromArray:[self dataToAddOnFirstPage]];
+        [self.tableView reloadData];
+
+        self.pageNumber++;
+    } else {
+        self.viewFirstReloaded = YES;
+    }
+}
+
+@end
